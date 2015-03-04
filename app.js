@@ -16,6 +16,10 @@ var execs=0;
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+//var io2=require('socket.io-client');
+//io2=io2.connect('http://localhost:3010');
+//io2.emit("hello","hello");
+
 var os=require('os').platform();
 console.log("running on "+os);
 
@@ -66,7 +70,7 @@ app.set('duration',10);
 // mongodb setup
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/NodeExpressApp');
+var db = monk('localhost:27017/Raspbies');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -139,22 +143,21 @@ function playBie(msg){
 }
 
 function recordBie(msg){
-  console.log("inside recordBie: "+msg);
+  file="audios/"+msg+".wav";
+
+  console.log("inside recordBie: "+file);
   if (os!="linux") {
     // using sox
-    execs=execproc('rec audios/'+msg+'.wav');
+    execs=execproc('rec '+file);
   }
   else {
-    execs=execproc('arecord -D plughw:1 --duration='+duration+' -f cd -vv audios/'+msg+'.wav');
+    execs=execproc('arecord -D plughw:1 --duration='+duration+' -f cd -vv '+file);
   }
 
   execs.on('close', function (code, signal) {
     console.log('child process terminated due to receipt of signal '+signal);
-    if (os!="linux") {
-      // using SOX
-      // execs=execproc('cp output.wav audios/'+msg+'_'+Date.now()+'.wav');
-    }
-    //process.exit();
+    // TODO: convert to mp3 ?
+    // TODO: upload to server
   });
 
   execs.stdout.on('data', function (data) {

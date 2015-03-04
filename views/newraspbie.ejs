@@ -23,7 +23,7 @@
 
   function messbie(valeur) {
     io=io.connect('http://localhost:3001');
-    cible=document.newraspbie.rasTitle.value;
+    cible=document.newraspbie.rasPath.value;
     if (valeur=="stop") {
       io.emit('stop');
     }
