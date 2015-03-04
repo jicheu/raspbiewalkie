@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+   <script>
+
+   function countdown() {
+    var seconds_left = <%= duration %>;
+    var interval = setInterval(function() {
+        document.getElementById('timer_id').innerHTML = --seconds_left;
+
+        if (seconds_left <= 0)
+        {
+            document.getElementById('timer_id').innerHTML = 'Done';
+            clearInterval(interval);
+            messbie('stop');
+        }
+    }, 1000);
+    }
+
+
+  function messbie(valeur) {
+    io=io.connect('http://localhost:3001');
+    cible=document.newraspbie.rasTitle.value;
+    if (valeur=="stop") {
+      io.emit('stop');
+    }
+    else {
+      io.emit('record', cible);
+      countdown();
+
+    }
+    return true;
+  }
+
+
+</script>
+
+    <% include partials/nav %>
+    <h1><%= title %></h1>
+    <form name="newraspbie" method="post" action="/raspbies">
+      <input type="text" name="username" placeholder="username"><br>
+      <input type="text" name="rasTitle" placeholder="title"><br>
+      <input type="text" name="rasPath" placeholder="message"><br>
+      <input type="submit" value="Add Message">    
+      <input type="button" name="record" value="Record" onClick="messbie('start');">
+      <input type="button" name="stop" value="Stop" onClick="messbie('stop');">
+
+    </form>
+    <h2>Time remaining: <p id="timer_id"><%= duration %></p>
+    </h2>
+  </body>
+</html>
