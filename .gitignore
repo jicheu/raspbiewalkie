@@ -3,3 +3,4 @@ old
 output.wav
 database/mongod.lock
 audios/*.wav
+database/*

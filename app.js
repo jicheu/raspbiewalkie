@@ -129,29 +129,30 @@ function playBie(msg){
   file="audios/"+msg+".wav";
   console.log("playing "+file+" on "+os);
   if (os!="linux") {
-    console.log("simulating play on "+os);
-    return (true);
+    // using sox
+    cmd="play"
+  } else {
+    cmd="aplay"
   }
-  execs=execproc('aplay '+file);
-
-
+  
+  execs=execproc(cmd+' '+file);
 }
 
 function recordBie(msg){
   console.log("inside recordBie: "+msg);
   if (os!="linux") {
-    console.log("simulating record on "+os);
-    execs=execproc('read toto');
+    // using sox
+    execs=execproc('rec audios/'+msg+'.wav');
   }
   else {
-    execs=execproc('arecord -D plughw:1 --duration='+duration+' -f cd -vv '+msg+'.wav');
+    execs=execproc('arecord -D plughw:1 --duration='+duration+' -f cd -vv audios/'+msg+'.wav');
   }
 
   execs.on('close', function (code, signal) {
     console.log('child process terminated due to receipt of signal '+signal);
     if (os!="linux") {
-      // fake copy for OSX (comment on RPI)
-      execs=execproc('cp output.wav audios/'+msg+'_'+Date.now()+'.wav');
+      // using SOX
+      // execs=execproc('cp output.wav audios/'+msg+'_'+Date.now()+'.wav');
     }
     //process.exit();
   });
