@@ -11,9 +11,10 @@ var execs=0;
       console.log("playing "+file+" on "+os);
       if (os!="linux") {
         // using sox
-        cmd="play"
+        cmd="play";
       } else {
-        cmd="aplay"
+        //cmd="aplay";
+        cmd="AUDIODRIVER=alsa AUDIODEV=hw:0,0 play";
       }
       
       execs=execproc(cmd+' '+file);
@@ -29,8 +30,8 @@ var execs=0;
       }
       else {
         //execs=execproc('arecord -D plughw:1 --duration='+global.duration+' -f cd -vv '+file);
-        execs=spawnproc('arecord', ['-D', 'plughw:1', '--duration='+global.duration, '-f','cd','-vv',file]);
-
+        //execs=spawnproc('arecord', ['-D', 'plughw:1', '--duration='+global.duration, '-f','cd','-vv',file]);
+        execs=spawnproc('rec',[file],{env: {AUDIODRIVER:'alsa', AUDIODEV:'hw:1,0'}});
       }
 
       execs.on('close', function (code, signal) {
