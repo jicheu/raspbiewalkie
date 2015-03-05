@@ -22,10 +22,25 @@ global.duration=10;
 // TODO: test if no wlan,use localhost at least
 
 if (os=="linux") {
-  global.serverip=require('os').networkInterfaces()['wlan0'][0]['address'];
-} else {
-  global.serverip="127.0.0.1";
+    if (require('os').networkInterfaces()['wlan0']) {
+      global.serverip=require('os').networkInterfaces()['wlan0'][0]['address'];
+    } 
+    else if (require('os').networkInterfaces()['eth0']) {
+      global.serverip=require('os').networkInterfaces()['eth0'][0]['address'];
+    } 
+    else {
+      global.serverip="127.0.0.1";
+    } 
+    
+} else if (os=="darwin") {
+  if (require('os').networkInterfaces()['en0']) {
+    global.serverip=require('os').networkInterfaces()['en0'][1]['address'];
+  } else {
+    global.serverip="127.0.0.1";
+  }
 }
+
+console.log(global.serverip);
 
 var Bies=require('./models/Raspbie.js');
 
