@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var Bies=require('../models/Raspbie');
+
 
 /* GET raspbies listing. */
 router.get('/', function(req, res) {
@@ -59,6 +61,8 @@ router.post('/', function(req, res) {
     if (error) {
       res.send("Could not create new raspbie.");
     } else {
+      console.log("added"+doc.username+" "+doc._id);
+      Bies.stopRecordBie(doc);
       res.location('raspbies');
       res.redirect('raspbies');
     }

@@ -1,6 +1,5 @@
 node_modules
 old
 output.wav
-database/mongod.lock
 audios/*
 database/*

@@ -15,12 +15,14 @@ var execs=0;
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var os=require('os').platform();
+
+var Bies=require('./models/Raspbie.js');
 
 //var io2=require('socket.io-client');
 //io2=io2.connect('http://localhost:3010');
 //io2.emit("hello","hello");
 
-var os=require('os').platform();
 console.log("running on "+os);
 
 server.listen(3001);
@@ -29,17 +31,17 @@ io.on('connection', function(socket){
   console.log('Connected');
   socket.on('play', function(msg){
     console.log('message to play: ' + msg);
-    playBie(msg);
+    Bies.playBie(msg);
   });
 
   socket.on('stop', function(){
     console.log('need to stop!');
-    stopRecordBie();
+    Bies.stopRecordBie('from1');
   });
 
   socket.on('record', function(msg){
     console.log('message to record: ' + msg);
-    recordBie(msg);
+    Bies.recordBie(msg);
   });
 
   socket.on('disconnect', function(){
@@ -125,59 +127,4 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-
-
-
-
-function playBie(msg){
-  file="audios/"+msg+".wav";
-  console.log("playing "+file+" on "+os);
-  if (os!="linux") {
-    // using sox
-    cmd="play"
-  } else {
-    cmd="aplay"
-  }
-  
-  execs=execproc(cmd+' '+file);
-}
-
-function recordBie(msg){
-  file="audios/"+msg+".wav";
-
-  console.log("inside recordBie: "+file);
-  if (os!="linux") {
-    // using sox
-    execs=execproc('rec '+file);
-  }
-  else {
-    execs=execproc('arecord -D plughw:1 --duration='+duration+' -f cd -vv '+file);
-  }
-
-  execs.on('close', function (code, signal) {
-    console.log('child process terminated due to receipt of signal '+signal);
-    // TODO: convert to mp3 ?
-    // TODO: upload to server
-  });
-
-  execs.stdout.on('data', function (data) {
-    console.log('stdout: ' + data);
-  });
-
-  execs.stderr.on('data', function (data) {
-    console.log('stderr: ' + data);
-  });
-
-  /*process.on('SIGINT', function() {
-    console.log('Got SIGINT.  Press Control-D to exit.');
-    execs.kill('SIGINT');
-  });
-  */
-
-}
-
-function stopRecordBie(){
-  console.log("inside stopRecordBie"+execs.pid);
-  execs.kill('SIGINT');
-}
 
