@@ -20,7 +20,12 @@ var os=require('os').platform();
 global.duration=10;
 // TODO: is there a better way? Otherwise, we can't connect to the interface remotely...
 // TODO: test if no wlan,use localhost at least
-global.serverip=require('os').networkInterfaces()['wlan0'][0]['address'];
+
+if (os=="linux") {
+  global.serverip=require('os').networkInterfaces()['wlan0'][0]['address'];
+} else {
+  global.serverip="127.0.0.1";
+}
 
 var Bies=require('./models/Raspbie.js');
 
