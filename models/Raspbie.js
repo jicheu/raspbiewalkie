@@ -1,6 +1,7 @@
 
 var os=require('os').platform();
 var execproc = require('child_process').exec;
+var spawnproc = require('child_process').spawn;
 
 var execs=0;
 
@@ -27,7 +28,9 @@ var execs=0;
         execs=execproc('rec '+file);
       }
       else {
-        execs=execproc('arecord -D plughw:1 --duration='+duration+' -f cd -vv '+file);
+        //execs=execproc('arecord -D plughw:1 --duration='+global.duration+' -f cd -vv '+file);
+        execs=spawnproc('arecord', ['-D', 'plughw:1', '--duration='+global.duration, '-f','cd','-vv',file]);
+
       }
 
       execs.on('close', function (code, signal) {

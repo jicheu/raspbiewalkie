@@ -17,15 +17,16 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var os=require('os').platform();
 
+global.duration=10;
+
 var Bies=require('./models/Raspbie.js');
+
 
 //var io2=require('socket.io-client');
 //io2=io2.connect('http://localhost:3010');
 //io2.emit("hello","hello");
 
 console.log("running on "+os);
-
-server.listen(3001);
 
 io.on('connection', function(socket){
   console.log('Connected');
@@ -49,6 +50,10 @@ io.on('connection', function(socket){
   });
 });
 
+server.listen(3001, function(){
+  console.log('listening on *:3001');
+});
+
 
 /*var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/NodeExpressApp', function(err) {
@@ -66,7 +71,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // TODO : settings DB
-app.set('duration',10);
+app.set('duration',global.duration);
 
 
 // mongodb setup

@@ -3,7 +3,8 @@
   <head>
   </head>
   <body>
-<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
    <script>
 
    function countdown() {
@@ -24,7 +25,7 @@
   function messbie(valeur) {
     io=io.connect('http://localhost:3001');
     cible=document.newraspbie.rasPath.value+document.newraspbie.username.value;
-    if (valeur=="stop") {
+    if (valeur=='stop') {
       //io.emit('stop');
       document.newraspbie.submit();
     }

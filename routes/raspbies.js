@@ -61,7 +61,7 @@ router.post('/', function(req, res) {
     if (error) {
       res.send("Could not create new raspbie.");
     } else {
-      console.log("added"+doc.username+" "+doc._id);
+      //console.log("added"+doc.username+" "+doc._id);
       Bies.stopRecordBie(doc);
       res.location('raspbies');
       res.redirect('raspbies');
