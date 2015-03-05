@@ -8,7 +8,8 @@
    <script>
 
   function messbie(valeur) {
-    io=io.connect('http://localhost:3001');
+    //io=io.connect('http://localhost:3001');
+    io=io.connect('http://<%= ip %>:3001');
     io.emit('play', valeur);
     return false;
   }

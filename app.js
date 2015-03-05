@@ -18,6 +18,9 @@ var io = require('socket.io')(server);
 var os=require('os').platform();
 
 global.duration=10;
+// TODO: is there a better way? Otherwise, we can't connect to the interface remotely...
+// TODO: test if no wlan,use localhost at least
+global.serverip=require('os').networkInterfaces()['wlan0'][0]['address'];
 
 var Bies=require('./models/Raspbie.js');
 
@@ -54,16 +57,6 @@ server.listen(3001, function(){
   console.log('listening on *:3001');
 });
 
-
-/*var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/NodeExpressApp', function(err) {
-    if(err) {
-        console.log('connection error', err);
-    } else {
-        console.log('connection successful');
-    }
-});
-*/
 var app = express();
 
 // view engine setup

@@ -10,6 +10,7 @@ router.get('/', function(req, res) {
   raspbies.find({},{}, function(e, docs){
     res.render('raspbies', { 
       title: 'RaspbieWalkie',
+      ip: global.serverip,
       'raspbies': docs 
     });
   });
@@ -20,6 +21,7 @@ router.get('/newraspbie', function(req, res) {
   var dur=req.app.get('duration');
   res.render('newraspbie', { 
     title: 'New Raspbie',
+    ip: global.serverip,
     duration: dur
   });
 
