@@ -8,16 +8,28 @@ router.get('/', function(req, res) {
   var db = req.db;
   var raspbies = db.get('raspbies');
 
-  var users = db.get('users');
-
   raspbies.find({},{}, function(e, docs){
-//    var user= users.findOne({_id: '54f971cdbddc6c6069b8c4d4'});
+    /*db.get('users').options.multi = false;
+    var users = db.get('users');
+    
+    for (thisdoc in docs) {
+        //console.log (docs[thisdoc]);
+        //console.log (docs[thisdoc].rasPath);
+        users.findById ( docs[thisdoc].userid ).on('complete', function (e,doc){ 
+          docs[thisdoc].username=doc.username;
+          console.log(docs[thisdoc]);
+        });
+      
+        console.log(docs[thisdoc]);
 
+    }   //function (element, index, elements) {
+    */
+    //console.log(docs[thisdoc]);
     //'raspbies': docs ,
     res.render('raspbies', { 
       title: 'RaspbieWalkie',
       ip: global.serverip,
-      'raspbies' : { docs.}      
+      'raspbies' : docs      
     
     });
   });
@@ -75,5 +87,29 @@ router.post('/', function(req, res) {
     }
   });
 });
+
+
+router.delete('/:id', function(req, res, next) {
+
+    var db=req.db;
+    var raspbies=db.get('raspbies');
+    raspbies.findOne({_id: req.params.id},function(e,doc) {
+        if (doc){
+            console.log("to delete:"+doc._id);
+            //raspbies.remove(doc._id) 
+            raspbies.remove({ _id : doc._id}, function (err) {
+                if(err) return done(err);
+              });
+        } else {
+            console.log('no data');
+        }
+        //res.method="GET";
+        //aspbies.get()
+        //res.location('/raspbies');
+        //res.redirect('/raspbies');
+    });
+});
+
+
 
 module.exports = router;

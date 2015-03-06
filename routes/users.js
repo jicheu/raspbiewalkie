@@ -66,11 +66,11 @@ router.delete('/:id', function(req, res, next) {
     users.findOne({_id: req.params.id},function(e,doc) {
         if (doc){
             console.log("to delete:"+doc._id);
-            users.remove(doc._id) 
+            //users.remove(doc._id) 
             users.remove({ _id : doc._id}, function (err) {
                 if(err) return done(err);
                 raspbies.findById({ userid: doc._id }, function (err, ras) {
-                      console.log (ras);
+                      console.log ("to delete in the future: " + ras);
                 });
               });
         } else {
