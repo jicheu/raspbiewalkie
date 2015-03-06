@@ -36,6 +36,7 @@ var execs=0;
 
       execs.on('close', function (code, signal) {
         console.log('child process terminated due to receipt of signal '+signal);
+
         // TODO: convert to mp3 ?
         // TODO: upload to server
       });
@@ -56,10 +57,10 @@ var execs=0;
 
     }
 
-    exports.stopRecordBie = function (msg){
-      console.log("inside stopRecordBie");
+    exports.stopRecordBie = function (msg, cible){
+      console.log("inside stopRecordBie"+msg+"///"+cible);
       execs.kill('SIGINT');
-      var moveme=execproc('mv audios/'+msg.rasPath+msg.userid+".wav "+"audios/"+msg._id+".wav");
+      var moveme=execproc('mv audios/'+msg+".wav "+"audios/"+cible+".wav");
 
     }
 

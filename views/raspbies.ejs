@@ -1,56 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  
   </head>
   <body>
-   <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+   <script src="/socket.io-1.0.6.js"></script>
+   <script src="/jquery.min.js"></script>
 
    <script>
 
-   function getname(userid, raspbieid) {
-    $.ajax({ 
-      type: 'GET',
-      url : '/users/'+userid
-    }).done(function ( response ) {
-       document.getElementById(raspbieid).innerHTML=response.username;
-    });
-    return "toto";
-  }
-
-
-  function messbie(valeur) {
-    //io=io.connect('http://localhost:3001');
-    io=io.connect('http://<%= ip %>:3001');
-    io.emit('play', valeur);
-    return false;
-  }
-
-  function deleteRaspbie(event, raspbies_id) {
-
-    event.preventDefault();
-    var confirmation = confirm('Are you sure you want to delete this raspbie?');
-    if (confirmation === true) {
-        $.ajax({
-            type: 'DELETE',
-            url: '/raspbies/'+raspbies_id
-        }).done(function( response ) {
-            if (response.msg === '') {
-                alert("done");
-            }
-            else {
-                alert('Error: ' + response.msg);
-            }
-        });
-
-    }
-    else {
-        // If they said no to the confirm, do nothing
+      function messbie(valeur) {
+        io=io.connect('http://<%= ip %>:3001');
+        io.emit('play', valeur);
         return false;
-    }
+      }
 
-};
+      function deleteRaspbie(event, raspbies_id) {
+        event.preventDefault();
+        var confirmation = confirm('Are you sure you want to delete this raspbie?');
+        if (confirmation === true) {
+            $.ajax({
+                type: 'DELETE',
+                url: '/raspbies/'+raspbies_id
+            }).done(function( response ) {
+                if (response.msg === '') {
+                    alert("done");
+                }
+                else {
+                    alert('Error: ' + response.msg);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+      };
   </script>
 
 
@@ -59,9 +42,16 @@
     <h1><%= title %></h1>
     <ul>
       <% raspbies.forEach(function(raspbies) { %>
-        <li><a href="http://<%= ip %>:3001/users/<%=raspbies.userid%>" id="<%=raspbies._id%>">AAA</a> said <u onClick="messbie('<%= raspbies._id %>');"><%= raspbies.rasTitle %></u> -- <a href="#" onClick="deleteRaspbie(event, '<%= raspbies._id %>');document.location.reload();">click delete</a></li>
-                <script> getname ('<%=raspbies.userid%>','<%=raspbies._id%>'); </script>
-
+        <li>
+        At <%= raspbies.rasDate %>, <a href="http://<%= ip %>:3000/users/<%=raspbies.user_id%>" id="<%=raspbies.raspbie_id%>">
+        <%= raspbies.username %>
+        </a> said <a href="#" onClick="messbie('<%= raspbies.raspbie_id %>');">
+        <%= raspbies.rasTitle %>
+        </a> -- <%= raspbies.rasPath %> -- 
+        <a href="#" onClick="deleteRaspbie(event, '<%= raspbies.raspbie_id %>');document.location.reload();">
+        delete
+        </a>
+        </li>
       <% }); %>
     </ul>
 

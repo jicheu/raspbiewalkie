@@ -37,19 +37,16 @@
     }
     return true;
   }
-
-
 </script>
 
     <% include partials/nav %>
-
 
     <h1><%= title %></h1>
     <form name="newraspbie" method="post" action="/raspbies">
 
       User : <select name="userid">
         <% users.forEach(function(users) { %>
-          <option value='<%= users._id %>'> <%= users.username %> </value>
+          <option value='<%= users.user_id %>'> <%= users.username %> </value>
         <% }); %>            
       </select>
       <input type="text" name="rasTitle" placeholder="title"><br>

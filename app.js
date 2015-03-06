@@ -1,9 +1,10 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');  
 
 var routes = require('./routes/index');
 var raspbies = require('./routes/raspbies');
@@ -17,6 +18,11 @@ var execs=0;
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var os=require('os').platform();
+
+
+
+
+
 
 global.duration=10;
 
@@ -79,6 +85,21 @@ server.listen(3001, function(){
 });
 
 var app = express();
+
+var connection  = require('express-myconnection'); 
+var mysql = require('mysql');
+
+app.use(
+    
+    connection(mysql,{
+        
+        host: 'localhost',
+        user: 'root',
+        password : 'root',
+        port : 3306, //port mysql
+        database:'raspbies'
+    },'request')
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
