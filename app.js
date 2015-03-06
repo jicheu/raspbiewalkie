@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var raspbies = require('./routes/raspbies');
+var users = require('./routes/users');
 var play = require('./routes/play');
 
 var execproc = require('child_process').exec;
@@ -18,9 +19,9 @@ var io = require('socket.io')(server);
 var os=require('os').platform();
 
 global.duration=10;
-// TODO: is there a better way? Otherwise, we can't connect to the interface remotely...
-// TODO: test if no wlan,use localhost at least
 
+// TODO: is there a better way? Otherwise, we can't connect to the interface remotely...
+// TODO: get this code out of here?
 if (os=="linux") {
     if (require('os').networkInterfaces()['wlan0']) {
       global.serverip=require('os').networkInterfaces()['wlan0'][0]['address'];
@@ -44,7 +45,7 @@ console.log(global.serverip);
 
 var Bies=require('./models/Raspbie.js');
 
-
+// TODO: comm with server
 //var io2=require('socket.io-client');
 //io2=io2.connect('http://localhost:3010');
 //io2.emit("hello","hello");
@@ -109,6 +110,7 @@ app.use(function(req,res,next){
 // establishes middleware for express
 app.use('/', routes);
 app.use('/raspbies', raspbies);
+app.use('/users', users);
 app.use('/play', play);
 
 // catch 404 and forward to error handler

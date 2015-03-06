@@ -25,7 +25,7 @@
   function messbie(valeur) {
     //io=io.connect('http://localhost:3001');
     io=io.connect('http://<%= ip %>:3001');
-    cible=document.newraspbie.rasPath.value+document.newraspbie.username.value;
+    cible=document.newraspbie.rasPath.value+document.newraspbie.userid.value;
     if (valeur=='stop') {
       //io.emit('stop');
       document.newraspbie.submit();
@@ -42,9 +42,16 @@
 </script>
 
     <% include partials/nav %>
+
+
     <h1><%= title %></h1>
     <form name="newraspbie" method="post" action="/raspbies">
-      <input type="text" name="username" placeholder="username"><br>
+
+      User : <select name="userid">
+        <% users.forEach(function(users) { %>
+          <option value='<%= users._id %>'> <%= users.username %> </value>
+        <% }); %>            
+      </select>
       <input type="text" name="rasTitle" placeholder="title"><br>
       <input type="text" name="rasPath" placeholder="message"><br>
       <input type="submit" value="Add Message">    
@@ -54,5 +61,7 @@
     </form>
     <h2>Time remaining: <p id="timer_id"><%= duration %></p>
     </h2>
+
+
   </body>
 </html>

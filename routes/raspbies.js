@@ -7,24 +7,34 @@ var Bies=require('../models/Raspbie');
 router.get('/', function(req, res) {
   var db = req.db;
   var raspbies = db.get('raspbies');
+
+  var users = db.get('users');
+
   raspbies.find({},{}, function(e, docs){
+//    var user= users.findOne({_id: '54f971cdbddc6c6069b8c4d4'});
+
+    //'raspbies': docs ,
     res.render('raspbies', { 
       title: 'RaspbieWalkie',
       ip: global.serverip,
-      'raspbies': docs 
+      'raspbies' : { docs.}      
+    
     });
   });
 });
 
 /* GET new raspbies page. */
 router.get('/newraspbie', function(req, res) {
-  var dur=req.app.get('duration');
-  res.render('newraspbie', { 
-    title: 'New Raspbie',
-    ip: global.serverip,
-    duration: dur
-  });
-
+  var db = req.db;
+  var users = db.get('users');
+  users.find({},{}, function(e, docs){
+      res.render('newraspbie', { 
+        title: 'New Raspbie',
+        ip: global.serverip,
+        duration: req.app.get('duration'),
+        'users': docs
+      });
+    });
 });
 
 router.get('/:id', function(req, res, next) {
@@ -43,22 +53,17 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-
-
-
 /* POST to add new raspbies to db */
 router.post('/', function(req, res) {
 
   var db = req.db;
-  var userName = req.body.username;
-  var userTitle = req.body.rasTitle;
-  var userRaspbie = req.body.rasPath;
   var raspbies = db.get('raspbies');
-
+  
   raspbies.insert({
-    'username' : userName,
-    'rasTitle' : userTitle,
-    'rasPath'  : userRaspbie
+    'userid'   : req.body.userid,
+    'rasTitle' : req.body.rasTitle,
+    'rasDate'  : Date(),
+    'rasPath'  : req.body.rasPath
   }, function (error, doc) {
     if (error) {
       res.send("Could not create new raspbie.");
@@ -70,6 +75,5 @@ router.post('/', function(req, res) {
     }
   });
 });
-
 
 module.exports = router;

@@ -59,7 +59,7 @@ var execs=0;
     exports.stopRecordBie = function (msg){
       console.log("inside stopRecordBie");
       execs.kill('SIGINT');
-      var moveme=execproc('mv audios/'+msg.rasPath+msg.username+".wav "+"audios/"+msg._id+".wav");
+      var moveme=execproc('mv audios/'+msg.rasPath+msg.userid+".wav "+"audios/"+msg._id+".wav");
 
     }
 
