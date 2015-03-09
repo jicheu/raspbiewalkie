@@ -7,7 +7,7 @@ var uuid = require('node-uuid');
 /* GET raspbies listing. */
 router.get('/', function(req, res) {
   req.getConnection(function(err,connection){
-     connection.query('SELECT raspbies.*, users.username FROM raspbies JOIN users WHERE raspbies.user_id=users.user_id ORDER BY raspbie_id ASC',function(err,rows) {
+     connection.query('SELECT raspbies.*, users.username FROM raspbies JOIN users WHERE raspbies.user_id=users.user_id ORDER BY raspbie_id DESC',function(err,rows) {
         if(err)  console.log("Error Selecting : %s ",err );
         res.render('raspbies',{
           title:"Raspbies",   
@@ -15,22 +15,9 @@ router.get('/', function(req, res) {
           'raspbies':rows});
       });
   });
-
-/*  var db = req.db;
-  var raspbies = db.get('raspbies');
-
-  raspbies.find({},{}, function(e, docs){
-    res.render('raspbies', { 
-      title: 'RaspbieWalkie',
-      ip: global.serverip,
-      'raspbies' : docs      
-    
-    });
-  });
-*/
 });
 
-/* GET new raspbies page. */
+/* GET new raspbies from any user page. */
 router.get('/newraspbie', function(req, res) {
 
   req.getConnection(function(err,connection){
@@ -45,38 +32,38 @@ router.get('/newraspbie', function(req, res) {
         });
       });
   });
-  /*var db = req.db;
-  var users = db.get('users');
-  users.find({},{}, function(e, docs){
-      res.render('newraspbie', { 
-        title: 'New Raspbie',
-        ip: global.serverip,
-        duration: req.app.get('duration'),
-        'users': docs
-      });
-    });*/
 });
+
 
 router.get('/:id', function(req, res, next) {
   var id = req.params.id;   
   req.getConnection(function(err,connection){
      connection.query('SELECT * FROM users WHERE rasbpie_id = ?',[id],function(err,rows) {
         if(err)  console.log("Error Selecting : %s ",err );
-        res.render('raspbies',{title:"Rasbpie",'docs':rows});
+        res.render('raspbies',{
+          title:"Rasbpie",
+          'docs':rows
+        });
      });       
   });
-   /* var db=req.db;
-    var raspbies=db.get('raspbies');
-    raspbies.findOne({_id: req.params.id},function(e,doc) {
-        if (doc){
-            console.log(doc._id);
-            res.json(doc);
-        } else {
-            console.log('no data');
-            res.location('/raspbies');
-            res.redirect('/raspbies');
-        }
-    });*/
+});
+
+/* GET new raspbies from one specific user page. */
+router.get('/newraspbie/:id', function(req, res) {
+  var id = req.params.id;   
+
+  req.getConnection(function(err,connection){
+     connection.query('SELECT * FROM users',function(err,rows) {
+        if(err)  console.log("Error Selecting : %s ",err );
+        res.render('createraspbie', { 
+          title: 'Create Raspbie',
+          ip: global.serverip,
+          duration: req.app.get('duration'),
+          uuid: uuid.v1(),
+          user_id: id
+        });
+      });
+  });
 });
 
 /* POST to add new raspbies to db */
@@ -91,7 +78,7 @@ router.post('/', function(req, res) {
             rasMessage : input.rasMessage,
             rasDate  : date
         };
-        
+      
         var query = connection.query("INSERT INTO raspbies set ? ",data, function(err, rows)
         {
           if (err) console.log("Error inserting : %s ",err );

@@ -7,7 +7,11 @@ router.get('/', function(req, res) {
   req.getConnection(function(err,connection){
      connection.query('SELECT * FROM users',function(err,rows) {
         if(err)  console.log("Error Selecting : %s ",err );
-        res.render('users',{title:"Users",'users':rows});
+        res.render('users',{
+          title:"Users",
+          ip: global.serverip,
+          'users':rows
+        });
       });
   });
 });
@@ -30,7 +34,7 @@ router.get('/:id', function(req, res, next) {
                connection.query('SELECT * FROM raspbies WHERE user_id = ?',[id],function(err,rows2) {
                   if(err)  console.log("Error Selecting : %s ",err );
                   res.render('user',{
-                    title:"Users",
+                    title:"User detail",
                     ip: global.serverip,
                     'users':rows,
                     'raspbies':rows2});

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  </head>
+  <% include partials/header %>
   <body>
    <script src="/socket.io-1.0.6.js"></script>
    <script src="/jquery.min.js"></script>
@@ -55,27 +54,60 @@
     </script>
 
     <% include partials/nav %>
-    <h1><%= title %></h1>
-    <ul>
+
+        <div class="list-group">
+
       <% users.forEach(function(users) { %>
-        <li><%= users.user_id %> as <%= users.username %> is <%= users.firstname %> <%= users.lastname %></u><a href="#" onClick="deleteUser(event, '<%= users.user_id %>');">delete</a></li>
+        <div class="panel panel-info">
+          <div class="panel-heading">
+             <span class="h3" id="<%= users.user_id %>">
+                <%= users.username %> (User #ID <%= users.user_id %>) 
+            </span>
+          </div>
+          <div class="panel-body">
+            <span><%= users.firstname %> <%= users.lastname %></span>
+            <a class="btn btn-info btn-sm" role="button" href="#" onClick="document.location.href='http://<%= ip %>:3000/raspbies/newraspbie/<%=users.user_id%>'">Record&raquo;</a> 
+          </div>
+           <div class="panel-footer text-justify">
+              <a class="btn btn-danger btn-sm" role="button" href="#" onClick="deleteUser(event, '<%= users.user_id %>');">
+              Delete&raquo;</a>
+           </div>
+        </div>      
       <% }); %>
-    </ul>
+        </div>
 
 
-    <ul>
-      <% raspbies.forEach(function(raspbies) { %>
-        <li>
-        At <%= raspbies.rasDate %>, <u onClick="messbie('<%= raspbies.raspbie_id %>');">
-        <%= raspbies.rasTitle %>
-        </u> -- <%= raspbies.rasPath %> -- 
-        -- <%= raspbies.rasMessage %> -- 
-        <a href="#" onClick="deleteRaspbie(event, '<%= raspbies.raspbie_id %>');document.location.reload();">
-        delete
-        </a>
-        </li>
+<div class="list-group">
+
+        <% raspbies.forEach(function(raspbies) { %>
+          <div class="panel panel-info">
+          <div class="panel-body">
+            <a class="btn btn-primary btn-sm" role="button" href="#" onClick="messbie('<%= raspbies.rasPath %>');">
+                <%= raspbies.rasTitle %>&raquo;</a>
+            </a>
+            <span>  <%= raspbies.rasPath %> </span>
+          </div>
+          <div class="panel-footer text-justify">
+              <script>
+              var d=new Date("<%= raspbies.rasDate %>")//.toUTCString();
+              var curr_date = d.getUTCDate();
+
+              var curr_month = d.getMonth()+1;
+
+              var curr_year = d.getFullYear();
+              var curr_hr = d.getHours();
+              var curr_min = d.getMinutes();
+              document.write("Posted on "+curr_date + "/" + curr_month + "/" + curr_year+", "+curr_hr+":"+curr_min);
+              </script>
+              <a class="btn btn-danger btn-sm" role="button" href="#" onClick="deleteRaspbie(event, '<%= raspbies.raspbie_id %>');document.location.reload();">Delete&raquo;</a>
+
+          </div>
+
+           </div>
       <% }); %>
-    </ul>
+
+</div>
+
 
   </body>
 </html>

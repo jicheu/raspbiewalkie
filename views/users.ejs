@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  </head>
+  <% include partials/header %>
   <body>
     <script src="/jquery.min.js"></script>
     <script>
@@ -25,11 +24,24 @@
       };
     </script>
     <% include partials/nav %>
-    <h1><%= title %></h1>
-    <ul>
+    <div class="list-group">
+
       <% users.forEach(function(users) { %>
-        <li><%= users.user_id %> as <%= users.username %> is <%= users.firstname %> <%= users.lastname %></u><a href="#" onClick="deleteUser(event, '<%= users.user_id %>');">delete</a></li>
+        <div class="panel panel-info">
+          <div class="panel-heading">
+             <span class="h3" id="<%= users.user_id %>" onClick="document.location.href='http://<%= ip %>:3000/users/<%=users.user_id%>';">
+                <%= users.username %> (User #ID <%= users.user_id %>) 
+            </span>
+          </div>
+          <div class="panel-body">
+            <span><%= users.firstname %> <%= users.lastname %></span>
+          </div>
+           <div class="panel-footer text-justify">
+              <a class="btn btn-danger btn-sm" role="button" href="#" onClick="deleteUser(event, '<%= users.user_id %>');">
+              Delete&raquo;</a>
+           </div>
+        </div>
       <% }); %>
-    </ul>
+    </div>
   </body>
 </html>

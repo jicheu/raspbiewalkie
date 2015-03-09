@@ -19,7 +19,6 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var os=require('os').platform();
 
-
 global.duration=10;
 
 // TODO: is there a better way? Otherwise, we can't connect to the interface remotely...

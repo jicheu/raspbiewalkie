@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  </head>
+  <% include partials/header %>
   <body>
    <script src="/socket.io-1.0.6.js"></script>
    <script src="/jquery.min.js"></script>
@@ -39,20 +38,53 @@
 
     <% include partials/nav %>
 
-    <h1><%= title %></h1>
-    <ul>
-      <% raspbies.forEach(function(raspbies) { %>
-        <li>
-        At <%= raspbies.rasDate %>, <a href="http://<%= ip %>:3000/users/<%=raspbies.user_id%>" id="<%=raspbies.raspbie_id%>">
-        <%= raspbies.username %>
-        </a> said <a href="#" onClick="messbie('<%= raspbies.raspbie_id %>');">
-        <%= raspbies.rasTitle %>
-        </a> -- <%= raspbies.rasPath %> -- 
-        <a href="#" onClick="deleteRaspbie(event, '<%= raspbies.raspbie_id %>');document.location.reload();">
-        delete
-        </a>
-        </li>
+
+    <a href="#">What's new <span class="badge">42</span></a>
+
+<div class="list-group">
+
+        <% raspbies.forEach(function(raspbies) { %>
+          <div class="panel panel-info">
+          <div class="panel-heading">
+             <a href="http://<%= ip %>:3000/users/<%=raspbies.user_id%>" class="h3" id="<%=raspbies.raspbie_id%>">
+                <%= raspbies.username %>
+            </a>
+          </div>
+
+          <div class="panel-body">
+            <a class="btn btn-primary btn-sm" role="button" href="#" onClick="messbie('<%= raspbies.rasPath %>');">
+                <%= raspbies.rasTitle %>&raquo;</a>
+            </a>
+            <span>  <%= raspbies.rasMessage %> </span>
+          </div>
+          <div class="panel-footer text-justify">
+              <script>
+              var d=new Date("<%= raspbies.rasDate %>")//.toUTCString();
+              var curr_date = d.getUTCDate();
+
+              var curr_month = d.getMonth()+1;
+
+              var curr_year = d.getFullYear();
+              var curr_hr = d.getHours();
+              var curr_min = d.getMinutes();
+              document.write("Posted on "+curr_date + "/" + curr_month + "/" + curr_year+", "+curr_hr+":"+curr_min);
+              </script>
+              <a class="btn btn-danger btn-sm" role="button" href="#" onClick="deleteRaspbie(event, '<%= raspbies.raspbie_id %>');document.location.reload();">Delete&raquo;</a>
+
+          </div>
+
+           </div>
       <% }); %>
+
+</div>
+
+    <ul>
+
+
+
+
+
+        
     </ul>
 
   </body>

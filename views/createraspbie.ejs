@@ -50,16 +50,9 @@
         <span class="input-group-addon" id="basic-addon1">Message</span>
         <input name="rasMessage" type="text" class="form-control" placeholder="Message" aria-describedby="basic-addon1">
       </div>
-      <div class="input-group">
 
-        <span class="input-group-addon" id="basic-addon1">User</span>
-       <select name="userid">
-        <% users.forEach(function(users) { %>
-          <option value='<%= users.user_id %>'> <%= users.username %> </value>
-        <% }); %>            
-      </select>
-      </div>
       <input type="hidden" name="rasPath" value="<%= uuid %>">
+      <input type="hidden" name="userid" value="<%= user_id %>">
 
       <input type="button" class="btn btn-danger" name="record" id="btnrecord" value="Record" onClick="messbie('start');">
       <input type="button" class="btn btn-primary" id="btnstop" name="stop" value="Stop" onClick="messbie('stop');">

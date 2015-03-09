@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  </head>
+  <% include partials/header %>
   <body>
     <% include partials/nav %>
-    <h1><%= title %></h1>
-    <form name="newuser" method="post" action="/users">
-      <input type="text" name="username" placeholder="username"><br>
-      <input type="text" name="firstname" placeholder="first"><br>
-      <input type="text" name="lastname" placeholder="last"><br>
-      <input type="submit" value="Add User">    
+    <form class="navbar-form navbar-left"name="newuser" method="post" action="/users">
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon" id="basic-addon1">Username</span>
+        <input name="username" type="text" class="form-control" placeholder="username" aria-describedby="basic-addon1">
+      </div>
+      <div class="input-group input-group">
+        <span class="input-group-addon" id="basic-addon1">First Name</span>
+        <input name="firstname" type="text" class="form-control" placeholder="first name" aria-describedby="basic-addon1">
+      </div>
+      <div class="input-group input-group">
+        <span class="input-group-addon" id="basic-addon1">Last Name</span>
+        <input name="lastname" type="text" class="form-control" placeholder="last name" aria-describedby="basic-addon1">
+      </div>
+
+      <input class="btn btn-primary" type="submit" value="Add User">    
     </form>
     </h2>
   </body>
