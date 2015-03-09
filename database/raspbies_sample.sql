@@ -16,6 +16,16 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `raspbies`
+--
+
+/*!40000 DROP DATABASE IF EXISTS `raspbies`*/;
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `raspbies` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `raspbies`;
+
+--
 -- Table structure for table `raspbies`
 --
 
@@ -80,4 +90,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-07  0:38:25
+-- Dump completed on 2015-03-09  8:31:42
