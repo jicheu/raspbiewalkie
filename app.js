@@ -11,13 +11,14 @@ var raspbies = require('./routes/raspbies');
 var users = require('./routes/users');
 var play = require('./routes/play');
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var os=require('os').platform();
+
 var execproc = require('child_process').exec;
 
 var execs=0;
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var os=require('os').platform();
 
 global.duration=10;
 
@@ -160,7 +161,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
 module.exports = app;
+
+
 
 
