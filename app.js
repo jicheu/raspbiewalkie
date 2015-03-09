@@ -80,6 +80,8 @@ server.listen(3001, function(){
   console.log('listening on *:3001');
 });
 
+
+
 var app = express();
 
 var connection  = require('express-myconnection'); 
@@ -104,12 +106,6 @@ app.set('view engine', 'ejs');
 // TODO : settings DB
 app.set('duration',global.duration);
 
-
-// mongodb setup
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('localhost:27017/Raspbies');
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -117,12 +113,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// makes db accessible to router
-app.use(function(req,res,next){
-    req.db = db;
-    next();
-});
 
 // establishes middleware for express
 app.use('/', routes);
@@ -160,6 +150,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 module.exports = app;
 
