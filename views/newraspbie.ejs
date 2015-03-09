@@ -25,7 +25,7 @@
   function messbie(valeur) {
     //io=io.connect('http://localhost:3001');
     io=io.connect('http://<%= ip %>:3001');
-    cible=document.newraspbie.rasPath.value+document.newraspbie.userid.value;
+    cible= "<%= uuid %>"; //document.newraspbie.rasPath.value+document.newraspbie.userid.value;
     if (valeur=='stop') {
       //io.emit('stop');
       document.newraspbie.submit();
@@ -50,7 +50,9 @@
         <% }); %>            
       </select>
       <input type="text" name="rasTitle" placeholder="title"><br>
-      <input type="text" name="rasPath" placeholder="message"><br>
+      <input type="text" name="rasMessage" placeholder="message"><br>
+      <input type="hidden" name="rasPath"><%= uuid %><br>
+
       <input type="submit" value="Add Message">    
       <input type="button" name="record" value="Record" onClick="messbie('start');">
       <input type="button" name="stop" value="Stop" onClick="messbie('stop');">

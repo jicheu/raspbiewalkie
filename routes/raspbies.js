@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Bies=require('../models/Raspbie');
+var uuid = require('node-uuid');
 
 
 /* GET raspbies listing. */
@@ -39,6 +40,7 @@ router.get('/newraspbie', function(req, res) {
           title: 'New Raspbie',
           ip: global.serverip,
           duration: req.app.get('duration'),
+          uuid: uuid.v1(),
           'users': rows
         });
       });
@@ -86,6 +88,7 @@ router.post('/', function(req, res) {
             user_id    : input.userid,
             rasTitle : input.rasTitle,
             rasPath  : input.rasPath,
+            rasMessage : input.rasMessage,
             rasDate  : date
         };
         
